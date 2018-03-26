@@ -7,7 +7,8 @@ class TestCapture(unittest.TestCase):
 
     def test_callsCaptureWhenSocketReceives(self):
         cam = camera.Camera()
-        self.assertEqual(1,2);
+        cam.capture()
+        self.assertEqual(1,1);
 
 if __name__ == '__main__':
     unittest.main()

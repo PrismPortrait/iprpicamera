@@ -37,10 +37,10 @@ from setuptools import setup, find_packages
 from setuptools.command.install import install
 
 if sys.version_info[0] == 2:
-    raise ValueError('This package requires Python 3.2 or newer')
+    if not sys.version_info >= (2, 7):
+        raise ValueError('This package requires Python 2.7 at least')
 elif sys.version_info[0] == 3:
-    if not sys.version_info >= (3, 2):
-        raise ValueError('This package requires Python 3.2 or newer')
+    raise ValueError('This package requires Python 2.7')
 else:
     raise ValueError('Unrecognized major version of Python')
 
@@ -66,10 +66,6 @@ __classifiers__ = [
     'License :: OSI Approved :: MIT License',
     'Operating System :: POSIX :: Linux',
     'Programming Language :: Python :: 2.7',
-    'Programming Language :: Python :: 3.2',
-    'Programming Language :: Python :: 3.3',
-    'Programming Language :: Python :: 3.4',
-    'Programming Language :: Python :: 3.5',
     'Topic :: Multimedia :: Graphics :: Capture :: Digital Camera',
     ]
 

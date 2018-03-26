@@ -17,7 +17,7 @@ all:
 	@echo "make clean - Get rid of all generated files"
 
 test:
-	$(COVERAGE) run --rcfile coverage.cfg -m $(PYTEST) discover -s  tests -v
+	$(COVERAGE) run --rcfile coverage.cfg -m $(PYTEST) discover -s tests -v
 	$(COVERAGE) report --rcfile coverage.cfg
 
 clean:

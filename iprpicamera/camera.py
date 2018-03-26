@@ -1,3 +1,5 @@
 
-def Camera():
-    pass
+class Camera(object):
+
+    def capture(self):
+        pass
