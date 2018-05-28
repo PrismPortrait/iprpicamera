@@ -23,7 +23,10 @@ def capture(filename):
 
 @app.route("/download/<filename>")
 def download(filename):
-	return send_from_directory('.', filename + '.jpg')
+    try:
+        return send_from_directory('.', filename + '.jpg')
+    except:
+        return filename + " not found."
 
 
 @app.route("/delete/<filename>")
