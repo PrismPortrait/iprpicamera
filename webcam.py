@@ -12,8 +12,8 @@ def home():
 
 @app.route("/capture/<filename>")
 def capture(filename):
+	camera = PiCamera()
 	try:
-		camera = PiCamera()
 		fullname = filename + '.jpg'
 		camera.capture(fullname)
 	finally:
