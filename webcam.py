@@ -7,18 +7,17 @@ app = Flask(__name__)
 
 @app.route("/")
 def home():
-	return "I'm a camera!"
+    return "I'm a camera!"
 
 
 @app.route("/capture/<filename>")
 def capture(filename):
-	camera = PiCamera()
-	try:
-		fullname = filename + '.jpg'
-		camera.capture(fullname)
-	finally:
-		camera.close()
-	return "Captured: " + fullname
+    try:
+        fullname = filename + '.jpg'
+        camera.capture(fullname)
+    finally:
+        camera.close()
+    return "Captured: " + fullname
 
 
 @app.route("/download/<filename>")
@@ -39,4 +38,4 @@ def delete(filename):
 
 
 if __name__ == "__main__":
-	app.run(host='0.0.0.0', port=80, debug=True)
+    app.run(host='0.0.0.0', port=80, debug=True)
