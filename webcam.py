@@ -38,7 +38,7 @@ def delete(filename):
         return filename + " not found."
 
 
-def udp_receiver(camera):
+def udp_receiver(camera, camera_num):
     sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM, socket.IPPROTO_UDP)
     sock.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
     sock.bind(('', 40000))
@@ -60,7 +60,8 @@ if __name__ == "__main__":
         camera = PiCamera()
         camera_lock = RLock()
         # Start receiver as daemon, it will close if main thread closes.
-        udp_thread = Thread(target=udp_receiver, daemon=True)
+        udp_thread = Thread(target=udp_receiver, args=(camera, camera_num))
+        udp_thread.daemon = True
         udp_thread.start()
         app.run(host='0.0.0.0', port=80, debug=True)
     finally:
