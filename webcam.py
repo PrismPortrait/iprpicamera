@@ -14,7 +14,10 @@ camera = PiCamera()
 camera_lock = RLock()
 
 img_dir='/tmp/prismportrait/'
-os.makedirs(img_dir)
+try:
+    os.makedirs(img_dir)
+except OSError:
+    print("prismportrait dir exists")
 
 @app.route("/")
 def home():
