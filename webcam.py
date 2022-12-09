@@ -13,6 +13,8 @@ camera_num = socket.gethostname()[-1]
 camera = PiCamera()
 camera_lock = RLock()
 
+img_dir='/tmp/prismportrait/'
+os.makedirs(img_dir)
 
 @app.route("/")
 def home():
@@ -23,14 +25,14 @@ def home():
 def capture(filename):
     fullname = filename + '.jpg'
     with camera_lock:
-        camera.capture(fullname)
+        camera.capture(img_dir + fullname)
     return "Captured: " + fullname
 
 
 @app.route("/download/<filename>")
 def download(filename):
     try:
-        return send_from_directory('.', filename + '.jpg')
+        return send_from_directory(img_dir, filename + '.jpg')
     except:
         return filename + " not found."
 
@@ -38,7 +40,7 @@ def download(filename):
 @app.route("/delete/<filename>")
 def delete(filename):
     try:
-        os.remove(filename + '.jpg')
+        os.remove(img_dir + filename + '.jpg')
         return "Deleted: " + filename
     except OSError:
         return filename + " not found."
@@ -54,7 +56,7 @@ def udp_receiver():
         # TODO: Investigate faster options than just calling .capture
         sock.recv(1024)
         with camera_lock:
-            camera.capture(camera_num + ".jpg")
+            camera.capture(img_dir + camera_num + ".jpg")
 
 
 if __name__ == "__main__":
