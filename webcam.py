@@ -7,6 +7,12 @@ from picamera import PiCamera
 
 app = Flask(__name__)
 
+# Pull camera number from hostname.
+camera_num = socket.gethostname()[-1]
+# Init camera where both API and udp can use.
+camera = PiCamera()
+camera_lock = RLock()
+
 
 @app.route("/")
 def home():
@@ -38,7 +44,7 @@ def delete(filename):
         return filename + " not found."
 
 
-def udp_receiver(camera, camera_num):
+def udp_receiver():
     sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM, socket.IPPROTO_UDP)
     sock.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
     sock.bind(('', 40000))
@@ -52,18 +58,12 @@ def udp_receiver(camera, camera_num):
 
 
 if __name__ == "__main__":
-    camera = None
     try:
-        # Pull camera number from hostname.
-        camera_num = socket.gethostname()[-1]
-        # Init camera where both API and udp can use.
-        camera = PiCamera()
-        camera_lock = RLock()
         # Start receiver as daemon, it will close if main thread closes.
-        udp_thread = Thread(target=udp_receiver, args=(camera, camera_num))
+        udp_thread = Thread(target=udp_receiver)
         udp_thread.daemon = True
         udp_thread.start()
-        app.run(host='0.0.0.0', port=80, debug=True)
+        app.run(host='0.0.0.0', port=80, debug=False)
     finally:
         if camera is not None:
             camera.close()
