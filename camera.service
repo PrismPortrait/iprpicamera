@@ -1,0 +1,11 @@
+[Unit]
+Description=A Pi Camera
+After=multi-user.target
+
+[Service]
+Type=simple
+Restart=always
+ExecStart=/usr/bin/python /home/pi/iprpicamera/webcam.py
+
+[Install]
+WantedBy=multi-user.target
